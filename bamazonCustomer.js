@@ -51,20 +51,24 @@ function purchaseProduct() {
     ])
     .then(function (answers) {
       var quantityChosen = answers.quantity;
-      var ID = answers.ID;
+      var ID = answers.item;
+     
       databasePurchase(ID, quantityChosen);
+      console.log(ID)
     });
 };
 
 
 function databasePurchase(ID, quantityRequested) {
+  console.log(ID, quantityRequested)
   connection.query('SELECT * FROM Products WHERE item_id = ' + ID, function (err, res) {
 
+    console.log(res)
     if (quantityRequested <= res[0].stock_quantity) {
 
       var totalPrice = res[0].price * quantityRequested;
 
-      console.log("You have purchased " + quantityChosen + res[0].product_name + "(s) for a total of $" + totalPrice)
+      console.log("You have purchased  " + quantityRequested + " " + res[0].product_name + "(s) for a total of $" + totalPrice)
 
       connection.query(
         'UPDATE products SET stock_quantity = stock_quantity - ' + quantityRequested + ' WHERE item_id = ' + ID
